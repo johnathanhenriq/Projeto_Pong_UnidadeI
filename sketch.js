@@ -1,7 +1,4 @@
-function setup() {
-  createCanvas(400, 400);
-}
-
-function draw() {
-  background(220);
-}
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('pongCanvas');
+  new Mundo(canvas);
+});
