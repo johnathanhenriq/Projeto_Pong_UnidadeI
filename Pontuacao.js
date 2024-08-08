@@ -14,7 +14,7 @@ class Pontuacao {
 
     draw(context, canvas) {
         context.fillStyle = 'white';
-        context.font = '20px Arial';
+        context.font = '20px Times New Roman';
         context.fillText(this.pontosEsquerda, canvas.width / 4, 20);
         context.fillText(this.pontosDireita, 3 * canvas.width / 4, 20);
     }
