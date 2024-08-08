@@ -28,12 +28,12 @@ class Bola {
         }
 
         if (this.x + this.radius > canvas.width) {
-            pontuacao.incrementarEsquerda();
+            pontuacao.adicionarPontoEsquerda();
             this.reset(canvas);
         }
 
         if (this.x - this.radius < 0) {
-            pontuacao.incrementarDireita();
+            pontuacao.adicionarPontoDireita();
             this.reset(canvas);
         }
     }
