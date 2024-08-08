@@ -3,7 +3,7 @@ class Mundo {
         this.canvas = canvas;
         this.context = canvas.getContext('2d');
         this.bola = new Bola(canvas.width / 2, canvas.height / 2, 10);
-        this.barraEsquerda = new Barra(10, (canvas.height - 100) / 2, 10, 100);
+        this.barraEsquerda = new Barra(6, (canvas.height - 100) / 2, 10, 100);
         this.barraDireita = new Barra(canvas.width - 20, (canvas.height - 100) / 2, 10, 100);
         this.pontuacao = new Pontuacao();
         this.colisao = new Colisao();
