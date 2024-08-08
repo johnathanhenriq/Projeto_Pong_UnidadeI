@@ -3,12 +3,12 @@ class Bola {
         this.x = x;
         this.y = y;
         this.radius = radius;
-        this.speedX = 6;
-        this.speedY = 6;
+        this.speedX = 5;
+        this.speedY = 5;
     }
 
     draw(context) {
-        context.fillStyle = 'black';
+        context.fillStyle = 'white';
         context.beginPath();
         context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         context.closePath();
