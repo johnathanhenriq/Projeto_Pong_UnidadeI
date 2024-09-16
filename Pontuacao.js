@@ -65,4 +65,21 @@ class Drop {
     }
 }
 
+function checkDropCollision(jogador, drop, pontuacao, lado) {
+    if (jogador.colideCom(drop)) { // Se o jogador colidir com o drop
+        pontuacao.dobrarPontuacao(lado); // Dobra a pontuação do jogador correspondente
+        drop.recolher(); // Recolhe o drop
+    }
+}
+
+// Exemplo de uso
+const mundo = {}; // Simulação de mundo
+const pontuacao = new Pontuacao(mundo);
+const jogadorEsquerda = new Jogador(50, 50, 20, 100);
+const jogadorDireita = new Jogador(400, 50, 20, 100);
+const drop = new Drop(200, 100, 10, 10);
+
+// Simulando colisão do jogador da esquerda com o drop
+checkDropCollision(jogadorEsquerda, drop, pontuacao, 'esquerda');
+
 
