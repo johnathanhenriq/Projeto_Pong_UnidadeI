@@ -8,14 +8,26 @@ class Barra {
     }
 
     draw(context) {
+        context.fillStyle = 'white';
         context.fillRect(this.x, this.y, this.width, this.height);
     }
 
     moveUp() {
-        this.y = Math.max(this.y - this.speed, 10);
+        this.y -= this.speed;
+        if (this.y < 10) {
+            this.y = 10;
+        }
     }
 
     moveDown(canvas) {
-        this.y = Math.min(this.y + this.speed, canvas.height - this.height);
+        this.y += this.speed;
+        if (this.y + this.height > canvas.height - 10) {
+            this.y = canvas.height - this.height - 10;
+        }
+    }
+
+    diminuirAltura(fator) {
+        this.height *= fator;
+        this.height = Math.max(this.height, 10); // Garante uma altura mínima
     }
 }
