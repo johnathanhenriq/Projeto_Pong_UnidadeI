@@ -7,12 +7,12 @@ class Pontuacao {
 
     incrementarEsquerda() {
         this.pontosEsquerda++;
-        this.mundo.gerarDrop('esquerda'); // Gere um drop quando o lado esquerdo pontuar
+        this.mundo.gerarDrop('esquerda'); 
     }
 
     incrementarDireita() {
         this.pontosDireita++;
-        this.mundo.gerarDrop('direita'); // Gere um drop quando o lado direito pontuar
+        this.mundo.gerarDrop('direita'); 
     }
 
     dobrarPontuacao(jogador) {
@@ -66,8 +66,8 @@ class Drop {
 }
 
 function checkDropCollision(jogador, drop, pontuacao, lado) {
-    if (jogador.colideCom(drop)) { // Se o jogador colidir com o drop
-        pontuacao.dobrarPontuacao(lado); // Dobra a pontuação do jogador correspondente
+    if (jogador.colideCom(drop)) { 
+        pontuacao.dobrarPontuacao(lado); 
         drop.recolher(); // Recolhe o drop
     }
 }
