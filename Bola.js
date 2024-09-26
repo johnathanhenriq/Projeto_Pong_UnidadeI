@@ -1,18 +1,19 @@
 class Bola {
-    constructor(x, y, radius) {
+    constructor(x, y, radius, mundo) {
         this.x = x;
         this.y = y;
         this.radius = radius;
         this.speedX = 5;
         this.speedY = 5;
+        this.mundo = mundo; // Referência ao mundo para gerar recompensas
     }
 
     draw(context) {
-        context.fillStyle = 'white';
         context.beginPath();
         context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-        context.closePath();
+        context.fillStyle = 'white'; // Defina a cor da bola
         context.fill();
+        context.closePath();
     }
 
     update(canvas, barraEsquerda, barraDireita, colisao, pontuacao) {
@@ -29,18 +30,25 @@ class Bola {
 
         if (this.x + this.radius > canvas.width) {
             pontuacao.incrementarEsquerda();
-            this.reset(canvas);
+            this.reset(canvas, 'esquerda');
         }
 
         if (this.x - this.radius < 0) {
             pontuacao.incrementarDireita();
-            this.reset(canvas);
+            this.reset(canvas, 'direita');
         }
     }
 
-    reset(canvas) {
+    reset(canvas, pontuador) {
+        console.log('Reinicializando a bola...');
         this.x = canvas.width / 2;
         this.y = canvas.height / 2;
-        this.speedX = -this.speedX;
+        this.speedX = 5 * (Math.random() > 0.5 ? 1 : -1); // Reinicia a velocidade horizontal aleatoriamente
+        this.speedY = 5 * (Math.random() > 0.5 ? 1 : -1); // Reinicia a velocidade vertical aleatoriamente
+
+        // Gera uma recompensa apenas após a marcação de um ponto
+        if (pontuador === 'esquerda' || pontuador === 'direita') {
+            this.mundo.gerarRecompensaAleatoria();
+        }
     }
 }
