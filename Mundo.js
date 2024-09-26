@@ -2,16 +2,13 @@ class Mundo {
     constructor(canvas) {
         this.canvas = canvas;
         this.context = canvas.getContext('2d');
-        this.bola = new Bola(canvas.width / 2, canvas.height / 2, 10);
+        this.bola = new Bola(canvas.width / 2, canvas.height / 2, 10, this);
         this.barraEsquerda = new Barra(8, (canvas.height - 100) / 2, 10, 100);
-        this.barraDireita = new Barra(canvas.width - 20, (canvas.height - 100) / 2, 10, 100);
+        this.barraDireita = new Barra(this.canvas.width - 20, (this.canvas.height - 100) / 2, 10, 100);
         this.pontuacao = new Pontuacao(this);
         this.colisao = new Colisao();
-        this.drops = [];
-
-        this.temporizador = new Temporizador(5000, () => this.gerarDropAleatorio()); // Gera um drop a cada 5 segundos
-        this.temporizador.iniciar();
-
+        this.recompensas = [];
+        this.temporizador = new Temporizador(10000, () => this.gerarRecompensaAleatoria());
         this.bindControls();
         this.gameLoop();
     }
@@ -35,56 +32,60 @@ class Mundo {
         });
     }
 
-    atualizarDrops() {
-        this.drops = this.drops.filter(drop => {
-            if (drop.update(this.bola)) {
-                return false; // Remove drops que expiraram ou colidiram
+    reinicializarJogo() {
+        console.log('Reinicializando o jogo...');
+        this.bola.reset(this.canvas);
+        this.barraEsquerda = new Barra(8, (this.canvas.height - 100) / 2, 10, 100);
+        this.barraDireita = new Barra(this.canvas.width - 20, (this.canvas.height - 100) / 2, 10, 100);
+        this.recompensas = []; // Limpa as recompensas ao reiniciar o jogo
+    }
+
+    atualizarRecompensas() {
+        this.recompensas = this.recompensas.filter(recompensa => {
+            if (recompensa.update()) {
+                return false; // Remove recompensas que expiraram ou colidiram
             }
             return true;
         });
     }
 
-    gerarDrop(pontuador) {
-        let destinoX, destinoY;
-        if (pontuador === 'esquerda') {
-            destinoX = this.barraEsquerda.x + this.barraEsquerda.width / 2;
-            destinoY = this.barraEsquerda.y + this.barraEsquerda.height / 2;
+    gerarRecompensaAleatoria() {
+        if (this.recompensas.length > 0) return; // Garante que apenas uma recompensa seja gerada por vez
+        this.temporizador.iniciar();
+        const destinoX = Math.random() * this.canvas.width;
+        const destinoY = Math.random() * this.canvas.height;
+        const tipo = Math.random() > 0.5 ? 'amarelo' : 'vermelho';
+        let novaRecompensa;
+        if (tipo === 'amarelo') {
+            novaRecompensa = new RecompensaAmarelo(destinoX, destinoY, this.canvas);
         } else {
-            destinoX = this.barraDireita.x + this.barraDireita.width / 2;
-            destinoY = this.barraDireita.y + this.barraDireita.height / 2;
+            novaRecompensa = new RecompensaVermelho(destinoX, destinoY, this.canvas);
         }
-        
-        const tipo = Math.random() > 0.5 ? 'amarelo' : 'vermelho';
-        const novoDrop = new Drop(Math.random() * this.canvas.width, Math.random() * this.canvas.height, tipo, destinoX, destinoY);
-        this.drops.push(novoDrop);
+        this.recompensas.push(novaRecompensa);
     }
 
-    gerarDropAleatorio() {
-        const tipo = Math.random() > 0.5 ? 'amarelo' : 'vermelho';
-        const novoDrop = new Drop(Math.random() * this.canvas.width, Math.random() * this.canvas.height, tipo, Math.random() * this.canvas.width, Math.random() * this.canvas.height);
-        this.drops.push(novoDrop);
-    }
-
-    checkDropCollision() {
-        this.drops.forEach(drop => {
-            if (drop.colidiuCom(this.bola)) {
-                let recompensa;
-                if (drop.tipo === 'amarelo') {
-                    recompensa = new RecompensaAmarelo(drop.x, drop.y, this.canvas);
-                } else {
-                    recompensa = new RecompensaVermelho(drop.x, drop.y, this.canvas);
-                }
-                recompensa.aplicar(this.barraEsquerda, this.barraDireita, this.pontuacao);
-                this.drops = this.drops.filter(d => d !== drop); // Remove o drop após aplicar a recompensa
+    checkRecompensaCollision() {
+        this.recompensas.forEach(recompensa => {
+            if (this.colisao.detectarRecompensa(this.bola, recompensa)) {
+                const lado = this.bola.x < this.canvas.width / 2 ? 'esquerda' : 'direita';
+                recompensa.aplicar(this.barraEsquerda, this.barraDireita, this.pontuacao, lado);
+                this.recompensas = this.recompensas.filter(r => r !== recompensa); // Remove a recompensa após aplicar
             }
         });
     }
 
     update() {
+        console.log('Atualizando o jogo...');
         this.bola.update(this.canvas, this.barraEsquerda, this.barraDireita, this.colisao, this.pontuacao);
 
-        this.checkDropCollision();
-        this.atualizarDrops();
+        if (this.pontuacao.pontoMarcado) {
+            console.log('Ponto marcado, reinicializando...');
+            this.reinicializarJogo();
+            this.pontuacao.pontoMarcado = false; // Reset the flag
+        }
+
+        this.checkRecompensaCollision();
+        this.atualizarRecompensas();
     }
 
     draw() {
@@ -94,8 +95,8 @@ class Mundo {
         this.bola.draw(this.context);
         this.pontuacao.draw(this.context, this.canvas);
 
-        // Desenha os drops
-        this.drops.forEach(drop => drop.draw(this.context));
+        // Desenha as recompensas
+        this.recompensas.forEach(recompensa => recompensa.draw(this.context));
     }
 
     gameLoop() {
