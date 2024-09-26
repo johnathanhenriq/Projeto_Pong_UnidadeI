@@ -3,14 +3,22 @@ class Temporizador {
         this.duracao = duracao; // em milissegundos
         this.callback = callback;
         this.startTime = null;
+        this.ativo = false; // Flag para controlar o estado do temporizador
     }
 
     iniciar() {
         this.startTime = Date.now();
+        this.ativo = true;
         this.verificarTempo();
     }
 
+    parar() {
+        this.ativo = false;
+    }
+
     verificarTempo() {
+        if (!this.ativo) return;
+
         const agora = Date.now();
         if (agora - this.startTime >= this.duracao) {
             this.callback();
@@ -18,22 +26,4 @@ class Temporizador {
         }
         requestAnimationFrame(() => this.verificarTempo());
     }
-
-    setDuracao(novaDuracao) {
-        this.duracao = novaDuracao;
-    }
 }
-
-// Exemplo de uso
-const drop = new RecompensaAmarelo(100, 100, canvas);
-const temporizador = new Temporizador(5000, () => {
-    // Código para remover ou desativar o drop
-    drop.remover(); // Supondo que você tenha um método para remover o drop
-});
-
-// Iniciar o temporizador
-temporizador.iniciar();
-
-// Para ajustar a duração do drop
-temporizador.setDuracao(4000); 
-
