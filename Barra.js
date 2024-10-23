@@ -7,23 +7,22 @@ class Barra {
         this.speed = 15;
     }
 
-    draw(context) {
-        context.fillStyle = 'white';
-        context.fillRect(this.x, this.y, this.width, this.height);
+    draw() {
+        fill(255); // Define a cor de preenchimento como branco
+        rect(this.x, this.y, this.width, this.height); // Desenha o retângulo da barra
     }
 
     moveUp() {
         this.y -= this.speed;
-        if (this.y < 10) {
-            this.y = 10;
+        if (this.y < 0) {
+            this.y = 0;
         }
     }
 
-    moveDown(canvas) {
+    moveDown() {
         this.y += this.speed;
-        if (this.y + this.height > canvas.height - 10) {
-            this.y = canvas.height - this.height - 10;
+        if (this.y + this.height > height) {
+            this.y = height - this.height;
         }
     }
-
 }

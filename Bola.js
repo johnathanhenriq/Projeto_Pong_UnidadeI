@@ -3,24 +3,22 @@ class Bola {
         this.x = x;
         this.y = y;
         this.radius = radius;
-        this.speedX = 5;
-        this.speedY = 5;
+        this.speedX = 2;
+        this.speedY = 2;
         this.mundo = mundo; // Referência ao mundo para gerar recompensas
     }
 
-    draw(context) {
-        context.beginPath();
-        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-        context.fillStyle = 'white'; // Defina a cor da bola
-        context.fill();
-        context.closePath();
+    draw() {
+        fill(255); // Define a cor de preenchimento como branco
+        noStroke(); // Remove o contorno
+        ellipse(this.x, this.y, this.radius * 2); // Desenha a bola como um círculo
     }
 
-    update(canvas, barraEsquerda, barraDireita, colisao, pontuacao) {
+    update(barraEsquerda, barraDireita, colisao, pontuacao) {
         this.x += this.speedX;
         this.y += this.speedY;
 
-        if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+        if (this.y + this.radius > height || this.y - this.radius < 0) {
             this.speedY = -this.speedY;
         }
 
@@ -28,21 +26,21 @@ class Bola {
             this.speedX = -this.speedX;
         }
 
-        if (this.x + this.radius > canvas.width) {
+        if (this.x + this.radius > width) {
             pontuacao.incrementarEsquerda();
-            this.reset(canvas, 'esquerda');
+            this.reset('esquerda');
         }
 
         if (this.x - this.radius < 0) {
             pontuacao.incrementarDireita();
-            this.reset(canvas, 'direita');
+            this.reset('direita');
         }
     }
 
-    reset(canvas, pontuador) {
+    reset(pontuador) {
         console.log('Reinicializando a bola...');
-        this.x = canvas.width / 2;
-        this.y = canvas.height / 2;
+        this.x = width / 2;
+        this.y = height / 2;
         this.speedX = 5 * (Math.random() > 0.5 ? 1 : -1); // Reinicia a velocidade horizontal aleatoriamente
         this.speedY = 5 * (Math.random() > 0.5 ? 1 : -1); // Reinicia a velocidade vertical aleatoriamente
 
