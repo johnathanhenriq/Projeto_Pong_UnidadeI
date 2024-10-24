@@ -19,16 +19,16 @@ class Pontuacao {
     dobrarPontuacao(lado) {
         if (lado === 'esquerda') {
             this.pontosEsquerda += 2;
-        }else{
+        } else {
             this.pontosDireita += 2;
         }
-        
     }
 
-    draw(context, canvas) {
-        context.fillStyle = 'white';
-        context.font = '20px Arial';
-        context.fillText(this.pontosEsquerda, canvas.width / 4, 20);
-        context.fillText(this.pontosDireita, 3 * canvas.width / 4, 20);
+    draw() {
+        fill(255); // Define a cor de preenchimento como branco
+        textSize(20); // Define o tamanho da fonte
+        textAlign(CENTER, TOP); // Alinha o texto ao centro horizontalmente e ao topo verticalmente
+        text(this.pontosEsquerda, width / 4, 20); // Desenha a pontuação da esquerda
+        text(this.pontosDireita, 3 * width / 4, 20); // Desenha a pontuação da direita
     }
 }
