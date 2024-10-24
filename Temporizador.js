@@ -7,7 +7,7 @@ class Temporizador {
     }
 
     iniciar() {
-        this.startTime = Date.now();
+        this.startTime = millis(); // Utiliza a função millis() do p5.js
         this.ativo = true;
         this.verificarTempo();
     }
@@ -19,7 +19,7 @@ class Temporizador {
     verificarTempo() {
         if (!this.ativo) return;
 
-        const agora = Date.now();
+        const agora = millis(); // Utiliza a função millis() do p5.js
         if (agora - this.startTime >= this.duracao) {
             this.callback();
             this.startTime = agora; // Reinicia o temporizador
