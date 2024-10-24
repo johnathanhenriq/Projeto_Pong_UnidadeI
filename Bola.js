@@ -3,8 +3,8 @@ class Bola {
         this.x = x;
         this.y = y;
         this.radius = radius;
-        this.speedX = 2;
-        this.speedY = 2;
+        this.speedX = 5;
+        this.speedY = 5;
         this.mundo = mundo; // Referência ao mundo para gerar recompensas
     }
 

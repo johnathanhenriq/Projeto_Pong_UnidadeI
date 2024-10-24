@@ -6,7 +6,7 @@ class Mundo {
         this.pontuacao = new Pontuacao(this);
         this.colisao = new Colisao();
         this.recompensas = [];
-        this.temporizador = new Temporizador(10000, () => this.gerarRecompensaAleatoria());
+        this.temporizador = new Temporizador(2000, () => this.gerarRecompensaAleatoria());
     }
 
     reinicializarJogo() {

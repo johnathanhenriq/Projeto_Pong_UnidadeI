@@ -4,7 +4,7 @@ class Barra {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.speed = 15;
+        this.speed = 20;
     }
 
     draw() {
