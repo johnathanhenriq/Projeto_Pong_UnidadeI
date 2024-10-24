@@ -1,6 +1,6 @@
-class RecompensaAmarelo extends Recompensa{
-    constructor(x, y, canvas) {
-        super(x, y, canvas, 'yellow');
+class RecompensaAmarelo extends Recompensa {
+    constructor(x, y) {
+        super(x, y, 'yellow');
     }
 
     aplicar(barraEsquerda, barraDireita, pontuacao, lado) {

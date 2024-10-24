@@ -11,7 +11,7 @@ class Colisao {
         // Calcula a distância entre o centro da bola e o centro da recompensa
         const dx = bola.x - recompensa.x;
         const dy = bola.y - recompensa.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        const distance = dist(bola.x, bola.y, recompensa.x, recompensa.y);
 
         // Verifica se a distância é menor que a soma dos raios (colisão)
         return distance < bola.radius + recompensa.radius;
